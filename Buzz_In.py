@@ -15,10 +15,10 @@ print("\nPoll running!\n\n")
 # === Twitch IRC Settings ===
 if True:
     server = 'irc.chat.twitch.tv'
-    port = 6667
-    nickname = 'Eepy_Onyx'
+    port = 6667 #This is the default, you may need to change it
+    nickname = 'your_username'
     token = os.environ['TwitchAuth']
-    channel = '#eepy_onyx'
+    channel = '#channel_name_lowercase'
 
     # === Twitch IRC Connection ===
 sock = socket.socket()
@@ -112,15 +112,16 @@ def toggle_visibility(scene_name: str, source_names: list, visible: bool):
 
     except Exception as e:
         print(f"[ERROR] Failed to toggle visibility: {e}")
-name=['Test']
+name='name_of_your_textbox'
+scene='Your Scene Name'
 
 def send_message(message):
     sock.send(f"PRIVMSG #eepy_onyx : {message}\r\n".encode('utf-8'))
 
 
 #Body
-set_text_source_content('Gam','Test',f'!buzzin active for\n{seconds} seconds!')
-toggle_visibility('Gam',name,True)
+set_text_source_content(scene,name,f'!buzzin active for\n{seconds} seconds!')
+toggle_visibility(scene,[name],True)
 send_message(f"Buzz in active for {seconds} seconds! Do '!buzzin' followed by your message for a chance to be chosen! Topic: {topic}!")
 
 start_time=time.time()
@@ -142,7 +143,7 @@ while (time.time()-start_time) < seconds:
 
 
 send_message("!buzzin disabled! Picking a random answer!")     
-toggle_visibility('Gam',name,False)
+toggle_visibility(scene,[name],False)
 
 if buzzedin!=[]:
     ans=random.choice(buzzedin)
