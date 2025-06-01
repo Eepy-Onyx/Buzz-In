@@ -1,5 +1,6 @@
 
 #Script to run a buzz-in poll on Twitch and OBS, make sure to set the OBS_Websockets_Password to your password found in your OBS settings and TwitchAuth to your Twitch Authentication Token (With at least permissions to send messages) before running this script.
+#Make sure to update the nickname and channel under Twitch IRC settings, for example, if your Twitch Handle is JeffIsCool, the nickname would either be JeffIsCool or jeffiscool, and the channel would be #jeffiscool
 
 import os
 import time
@@ -8,6 +9,9 @@ import random
 import obsws_python as obs
 import select
 
+name='name_of_your_textbox' #Set this to the name of a text 
+scene='Your Scene Name' #Set this to the name of your scene in OBS
+
 buzzedin=[]
 seconds=int(input("How long do you want this to last?\n"))
 topic=input("\nWhat's the topic of this vote?\n")
@@ -15,10 +19,10 @@ print("\nPoll running!\n\n")
 # === Twitch IRC Settings ===
 if True:
     server = 'irc.chat.twitch.tv'
-    port = 6667 #This is the default, you may need to change it
-    nickname = 'your_username'
+    port = 6667 
+    nickname = 'your_username'  #Change this to your Twitch Nickname
     token = os.environ['TwitchAuth']
-    channel = '#channel_name_lowercase'
+    channel = '#channel_name_lowercase'  #change this to your Twitch username, the way it's written in the URL
 
     # === Twitch IRC Connection ===
 sock = socket.socket()
@@ -77,14 +81,6 @@ def set_text_source_content(scene_name: str, source_name: str, new_text: str):
 
 
 def toggle_visibility(scene_name: str, source_names: list, visible: bool):
-    """
-    Toggle visibility of multiple sources in a given scene.
-
-    Args:
-    scene_name (str): Name of the scene containing the sources.
-    source_names (list): List of source (scene item) names to toggle.
-    visible (bool): True to show, False to hide.
-    """
     try:
         # Get list of scene items in the scene
         item_list = ws.get_scene_item_list(scene_name)
@@ -112,8 +108,7 @@ def toggle_visibility(scene_name: str, source_names: list, visible: bool):
 
     except Exception as e:
         print(f"[ERROR] Failed to toggle visibility: {e}")
-name='name_of_your_textbox'
-scene='Your Scene Name'
+
 
 def send_message(message):
     sock.send(f"PRIVMSG #eepy_onyx : {message}\r\n".encode('utf-8'))
